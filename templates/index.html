@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mission to Mars</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+     body > .container {  
+      padding-top: 20px;     
+    }
+    /*
+      * Responsive stypes
+      */
+      @media (max-width: 980px) {
+      body > .container {
+        padding-top: 0;
+      }
+      .navbar-fixed-top {
+        margin-bottom: 0;
+      }
+     
+    }
+     
+  </style>
+
+  </head>
+  <body>
+    <div class="container">         
+      <!-- Add Jumbotron to Header -->    
+      <div class="row jumbotron text-center">
+        <span class="text-primary"><h1>Mission to Mars</h1></span>
+        <!-- Add a button to activate scraping script -->
+        <button class="btn btn-primary btn-lg btn-block" onclick="window.location.href='/scrape'" role='button'">Scrape New Data</button>       
+      </div>
+
+      <!-- Add section for Mars News -->
+      <div class="row" id="mars-news">
+        <div class="col-md-12">
+          <div class="row text-right">
+            <button type="button" class="btn btn-info" onclick="alert('Under construction... more to come!')" style="cursor:pointer;">
+              <span class="glyphicon glyphicon-search"></span>Search 
+            </button>      
+            <a href="#" class="btn btn-info" onclick="window.print();" target="_blank" style="cursor:pointer;">
+              <span class="glyphicon glyphicon-print"></span>Print  
+            </a>
+          </div>
+          <div class="media">
+            <div class="media-body text-center">
+              <span class="text-primary"><h2>Latest Mars News</h2></span>
+              <h4 class="media-heading">{{ mars.news_title }}</h4>
+              <p>{{ mars.news_paragraph }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section for Featured Image and Facts table -->
+      
+      <div class="row" id="mars-featured-image">
+        <div class="col-md-12">
+            <!-- if images is False/None/non-existent, then default to error message -->
+          <div class="col-md-8">
+            <div class="page-header">
+              <h2 class="text-center text-primary">Featured Mars Image</h2>
+            </div>
+            <img
+              src="{{mars.featured_image | default('static/images/error.png', true) }}"
+              class="img-responsive"
+              alt="Responsive image"
+            />
+          </div>
+          
+          <div class="col-md-4" id="mars-facts">
+            <div class="page-header">
+              <h2 class="text-center text-primary">Mars Fact</h2>
+            </div>
+            <!-- Mars Facts --> 
+            <center>
+              <div class="table-responsive" style="overflow-x:auto;">              
+                  {{ mars.facts | safe }}              
+              </div>                                                        
+          </center>
+          </div>
+        </div>
+      </div>
+      
+
+      <!-- Section for Mars Hemispheres -->
+      <div class="row" id="mars-hemispheres">
+        <div class="col-md-12">
+          <div class="page-header">
+            <h2 class="text-center text-primary">Mars Hemispheres</h2>
+          </div>
+          {% for hemisphere in mars.hemispheres %}
+          <div class="col-md-3">
+            <div class="thumbnail">
+              <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}" alt="...">
+              <div class="caption text-center">
+                <h5>{{hemisphere.title}}</h5>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>      
+    </div>    
+  </body>
+</html>

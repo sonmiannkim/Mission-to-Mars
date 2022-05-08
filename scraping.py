@@ -10,9 +10,13 @@ def scrape_all():
     # Initiate headless driver for deployment
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)
-    news_title, news_paragraph = mars_news(browser)
+    # Mars Data
+    news_title, news_paragraph = mars_news(browser)  
+    # Hemisphere Data
+    hemispheres = get_hemisphere_data(browser)        
     # Run all scraping functions and store results in dictionary
     data = {
+        "hemispheres" : hemispheres,
         "news_title": news_title,
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
@@ -93,11 +97,24 @@ def mars_facts():
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html()
 
+def get_hemisphere_data(browser):
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+    browser.is_element_present_by_css('div.item', wait_time=1)
+     # Parse the resulting html with soup
+    html = browser.html
+    sphere_soup = soup(html, 'html.parser')
+    spears_soup = sphere_soup.findAll('div', class_='item')
+    hemisphere_image_urls = []
+    for item in spears_soup:
+        sphere_title = item.find('h3').get_text()        
+        sphere_image_name = item.find('img', class_='thumb').get('src')
+        sphere_img_url = f'https://marshemispheres.com/{sphere_image_name}'    
+        hemisphere_image_urls.append({'img_url':sphere_img_url, 'title':sphere_title}) 
+        
+    return hemisphere_image_urls
+    
+
 if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
-
-
-
-
-
