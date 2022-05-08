@@ -1,7 +1,7 @@
 # Mission-to-Mars
 
 ## Overview of Project:
-using the latest technologies to utilize the existing web pages to scrap the only information we needed was a wonderful experience.
+Using the latest technologies to utilize the existing web pages to scrap the only information we needed was a wonderful experience.
 Using BeautifulSoup and Splinter, it was only a few lines of code, and the automated scraping could run for a long time.
 
 ## Summary:
